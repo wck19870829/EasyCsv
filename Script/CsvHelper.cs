@@ -21,7 +21,7 @@ namespace RedScarf.EasyCSV
         /// 初始化
         /// </summary>
         /// <param name="separator"></param>
-        public static void Init(char separator = ',')
+        public static void Init(char separator = CsvTable.DEFAULT_SEPARATOR)
         {
             CsvTable.Init(separator);
         }

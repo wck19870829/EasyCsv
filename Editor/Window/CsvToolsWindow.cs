@@ -13,7 +13,7 @@ namespace RedScarf.EasyCsvEditor
     /// </summary>
     public class CsvToolsWindow : EditorWindow
     {
-        const string RES_PATH_SUFFIX = "EasyCSV/Editor/EditorResources";
+        const string RES_PATH_SUFFIX = "EasyCsv/Editor/EditorResources";
         const string CONFIG_FILE = "EditorConfig.txt";
 
         static string resPath = "";
@@ -34,7 +34,7 @@ namespace RedScarf.EasyCsvEditor
             var paths = AssetDatabase.GetAllAssetPaths();
             foreach (var path in paths)
             {
-                if (path.EndsWith(RES_PATH_SUFFIX))
+                if (path.EndsWith(RES_PATH_SUFFIX,StringComparison.OrdinalIgnoreCase))
                 {
                     resPath = path;
                     break;

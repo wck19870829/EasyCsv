@@ -12,13 +12,15 @@ namespace RedScarf.EasyCSV
     /// </summary>
     public sealed class CsvTable
     {
-        const char ESCAPE_CHAR = '"';
-        const char CR = '\r';
+        public const char DEFAULT_SEPARATOR = ',';                              //默认分隔符
+        const char ESCAPE_CHAR = '"';                                           //转义符
+        const char CR = '\r';                                                   //以下为不同形式换行符
         const char LF = '\n';
         const string CRLF = "\r\n";
         const int DEFAULT_COLUMN_COUNT = 50;
         const int DEFAULT_ROW_COUNT = 999;
-        static char s_Separator = ',';
+        static char s_Separator = DEFAULT_SEPARATOR;                            //分隔符
+
         static readonly Dictionary<LineBreak, string> lineBreakDict = new Dictionary<LineBreak, string>()
         {
             {LineBreak.CRLF,CRLF },
@@ -556,9 +558,10 @@ namespace RedScarf.EasyCSV
         /// <summary>
         /// 获取csv数据
         /// </summary>
-        /// <param name="lineBreak">换行符</param>
+        /// <param name="lineBreak">换行符,如果参数为LineBreak.None,那使用csv中的换行符</param>
+        /// <param name="separator">分隔符</param>
         /// <returns></returns>
-        public string GetData(LineBreak lineBreak=LineBreak.None)
+        public string GetData(LineBreak lineBreak=LineBreak.None,char separator=DEFAULT_SEPARATOR)
         {
             stringBuilder.Length = 0;
 
@@ -596,7 +599,7 @@ namespace RedScarf.EasyCSV
                         for (var j=0;j<strLen;j++)
                         {
                             c = str[j];
-                            if (c == s_Separator)
+                            if (c == separator)
                             {
                                 //分隔符
                                 hasSpecialCharacters = true;
@@ -621,7 +624,7 @@ namespace RedScarf.EasyCSV
                         stringBuilder.Insert(columnStart, ESCAPE_CHAR);
                         stringBuilder.Append(ESCAPE_CHAR);
                     }
-                    stringBuilder.Append(s_Separator);
+                    stringBuilder.Append(separator);
                 }
                 //移除最后的分隔符及添加换行
                 stringBuilder.Remove(stringBuilder.Length - 1, 1);
