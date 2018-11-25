@@ -14,6 +14,7 @@ namespace RedScarf.EasyCsvEditor
         static string selectFile;
         static string selectDirectiry;
         static CsvTable.LineBreak saveLienBreak= CsvTable.LineBreak.CRLF;
+        static char separator=CsvTable.DEFAULT_SEPARATOR;
 
         [MenuItem("Tools/EasyCsv/Csv Format Convert Window")]
         static void Init()
@@ -51,6 +52,15 @@ namespace RedScarf.EasyCsvEditor
             using (var scope = new GUILayout.HorizontalScope())
             {
                 saveLienBreak = (CsvTable.LineBreak)EditorGUILayout.EnumPopup("Line break", saveLienBreak);
+
+                EditorGUILayout.Space();
+
+                var newSeparator = EditorGUILayout.TextField("Separator", separator.ToString());
+                char c;
+                if(System.Char.TryParse(newSeparator,out c))
+                {
+                    separator = c;
+                }
             }
             if (GUILayout.RepeatButton(new GUIContent("Save as...")))
             {
@@ -58,7 +68,7 @@ namespace RedScarf.EasyCsvEditor
                 if (!string.IsNullOrEmpty(saveFile))
                 {
                     var csvTable = new CsvTable("", File.ReadAllText(selectFile),false,false);
-                    var csvData= csvTable.GetData(saveLienBreak);
+                    var csvData= csvTable.GetData(saveLienBreak, separator);
                     File.WriteAllText(saveFile, csvData);
 
                     AssetDatabase.Refresh();
